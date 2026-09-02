@@ -4,6 +4,16 @@
       "version": "4.0.0",
       "resolved": "ghcr.io/devcontainer-config/features/dot-config@sha256:d9ca770ccb218e619d5725fd50f00dfacdf582d92a8c3901f11b53b1caddd878",
       "integrity": "sha256:d9ca770ccb218e619d5725fd50f00dfacdf582d92a8c3901f11b53b1caddd878"
+    },
+    "ghcr.io/devcontainers-extra/features/npm-package:1.0.4": {
+      "version": "1.0.4",
+      "resolved": "ghcr.io/devcontainers-extra/features/npm-package@sha256:ee315c064588643e1178eec33275efa55739f43761fc965b95a5d05eed70c76d",
+      "integrity": "sha256:ee315c064588643e1178eec33275efa55739f43761fc965b95a5d05eed70c76d"
+    },
+    "ghcr.io/devcontainers-extra/features/gh-cli:1.0.13": {
+      "version": "1.0.13",
+      "resolved": "ghcr.io/devcontainers-extra/features/gh-cli@sha256:bd667bbc8a0d4614b4c3613ec2cce260ea6cdf893f8a10b8b670e47240e0e993",
+      "integrity": "sha256:bd667bbc8a0d4614b4c3613ec2cce260ea6cdf893f8a10b8b670e47240e0e993"
     }
   }
 }

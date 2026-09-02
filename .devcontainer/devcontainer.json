@@ -4,8 +4,8 @@
 	"build": {
 		"dockerfile": "Dockerfile"
 	},
-"remoteUser": "node",
-"features": {
-	"ghcr.io/devcontainer-config/features/dot-config:4": {}
-}
+	"remoteUser": "node",
+	"features": {
+		"ghcr.io/devcontainer-config/features/dot-config:4": {}
+	}
 }
