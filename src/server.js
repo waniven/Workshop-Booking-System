@@ -4,13 +4,14 @@ const swaggerUi = require("swagger-ui-express");
 const mongoose = require("mongoose");
 const path = require("path");
 
-const vehicleRouter = require("./routes/vehicleRoute");
-
 const app = express();
 const dbURI = "mongodb://host.docker.internal:27017/workshop";
 const PORT = 3000;
 
-async function startServer(){
+const vehicleRouter = require('./controllers/vehicleController');
+const partsRouter = require('./controllers/partsController');
+
+async function startServer() {
   try {
     //connect to DB
     console.log("Establishing connection to the DB");
@@ -18,8 +19,8 @@ async function startServer(){
     console.log(`Sucessfully connected to DB at ${dbURI}`);
     // start server on set port
     app.listen(PORT, "0.0.0.0", () => {
-    console.log(`Server is running on port ${PORT}`);
-  });
+      console.log(`Server is running on port ${PORT}`);
+    });
   } catch (error) {
     console.log(`Failed to connect to DB, Error: ${error}`);
     process.exit(1);
@@ -35,17 +36,19 @@ const swaggerOptions = {
     },
     servers: [
       {
-        url: "http://localhost:3000",
+        url: "http://localhost:3000/api",
         description: "Development server",
       },
     ],
   },
-  apis: [path.join(__dirname, "./routes/*.js")],  // Path to the API routes folders
+  apis: [path.join(__dirname, "./controllers/*.js")], // Path to the API routes folders
 };
 
 const swaggerDocs = swaggerJsDoc(swaggerOptions);
+app.use(express.json());
 app.use("/swagger", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
-app.use(vehicleRouter);
+app.use("/api", vehicleRouter);
+app.use("/api", partsRouter);
 
 startServer();
