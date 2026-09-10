@@ -23,6 +23,16 @@ router.get('/vehicles', async (req, res) => {
     }
 });
 
+/**
+ * @openapi
+ * /api/vehicles:
+ *   post:
+ *     summary: Add a new vehicle
+ *     description: Creates a new vehicle record in the system.
+ *     responses:
+ *       201:
+ *         description: Vehicle created successfully.
+ */
 router.post('/vehicles', async (req, res) => {
     try {
         const newVehicle = new Vehicle(req.body);
