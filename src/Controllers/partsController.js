@@ -1,6 +1,6 @@
-const express = require("express");
+const express = require('express');
 const router = express.Router();
-const Parts = require("../models/vehicleModel");
+const Part = require('../models/partsModel');
 
 /**
  * @openapi
@@ -14,7 +14,7 @@ const Parts = require("../models/vehicleModel");
  */
 router.get("/parts", async (req, res) => {
   try {
-    const parts = await Parts.find();
+    const parts = await Part.find();
     res.status(200).json(parts);
   } catch (error) {
     res
@@ -60,6 +60,36 @@ router.post("/parts", async (req, res) => {
     const newPart = new Part(req.body);
     newPart.save();
     res.status(201).json(newPart);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+/**
+ * @openapi
+ * /parts/{partId}:
+ *   delete:
+ *     summary: Delete a part
+ *     description: Deletes a part record from the system.
+ *     parameters:
+ *       - name: partId
+ *         in: path
+ *         required: true
+ *         description: The unique identifier of the part to delete.
+ *         schema:
+ *           type: string
+ *     responses:
+ *       204:
+ *         description: Part deleted successfully.
+ *       404:
+ *         description: Part not found.
+ *       400:
+ *         description: Invalid part ID supplied.
+ */
+router.delete("/parts/:id", async (req, res) => {
+  try {
+    await Part.findByIdAndDelete(req.params.id);
+    res.status(200).json('Sucessfully deleted part');
   } catch (error) {
     res.status(500).json({ error: error.message });
   }

@@ -69,4 +69,34 @@ router.post("/vehicles", async (req, res) => {
   }
 });
 
+/**
+ * @openapi
+ * /vehicles/{vehicleId}:
+ *   delete:
+ *     summary: Delete a vehicle
+ *     description: Deletes a vehicle record from the system.
+ *     parameters:
+ *       - name: vehicleId
+ *         in: path
+ *         required: true
+ *         description: The unique identifier of the vehicle to delete.
+ *         schema:
+ *           type: string
+ *     responses:
+ *       204:
+ *         description: vehicle deleted successfully.
+ *       404:
+ *         description: vehicle not found.
+ *       400:
+ *         description: Invalid vehicle ID supplied.
+ */
+router.delete("/vehicles/:id" , async (req, res) => {
+  try{
+    await Vehicle.findByIdAndDelete(req.params.id);
+    res.status(200).json('Sucessfully deleted vehicle')
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
 module.exports = router;
