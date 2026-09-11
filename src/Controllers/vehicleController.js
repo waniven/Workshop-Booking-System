@@ -71,7 +71,7 @@ router.post("/vehicles", async (req, res) => {
 
 /**
  * @openapi
- * /vehicles/{vehicleId}:
+ * /vehicles/{id}:
  *   delete:
  *     summary: Delete a vehicle
  *     description: Deletes a vehicle record from the system.

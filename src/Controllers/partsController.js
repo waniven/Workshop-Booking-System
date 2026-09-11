@@ -111,7 +111,7 @@ router.patch("/parts/:id", async (req, res) => {
 
 /**
  * @openapi
- * /parts/{partId}:
+ * /parts/{id}:
  *   delete:
  *     summary: Delete a part
  *     description: Deletes a part record from the system.
