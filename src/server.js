@@ -46,6 +46,7 @@ const swaggerOptions = {
 
 const swaggerDocs = swaggerJsDoc(swaggerOptions);
 app.use(express.json());
+
 app.use("/swagger", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
 app.use("/api", vehicleRouter);

@@ -67,6 +67,50 @@ router.post("/parts", async (req, res) => {
 
 /**
  * @openapi
+ * /parts/{id}:
+ *   patch:
+ *     summary: Update a part status
+ *     description: Update the status of a specific part in the system.
+ *     parameters:
+ *       - name: id
+ *         in: path
+ *         required: true
+ *         description: The unique identifier of the part to update.
+ *         schema:
+ *           type: string
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - status
+ *             properties:
+ *               status:
+ *                 type: string
+ *                 description: The new status of the part.
+ *     responses:
+ *       200:
+ *         description: Part status updated successfully.
+ *       400:
+ *         description: Invalid input or missing status.
+ *       404:
+ *         description: Part not found.
+ *       500:
+ *         description: Internal server error.
+ */
+router.patch("/parts/:id", async (req, res) => {
+  try{
+     await Part.updateOne({ _id: req.params.id }, { status: req.body.status }); 
+    res.status(201).json('Sucessfully updated part status');
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+/**
+ * @openapi
  * /parts/{partId}:
  *   delete:
  *     summary: Delete a part
