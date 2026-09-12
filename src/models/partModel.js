@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const partsSchema = new mongoose.Schema(
+const partSchema = new mongoose.Schema(
   {
     partNumber: {
       type: Number,
@@ -25,5 +25,5 @@ const partsSchema = new mongoose.Schema(
   },
 );
 
-const Parts = mongoose.model("Parts", partsSchema);
-module.exports = Parts;
+const Part = mongoose.model("part", partSchema);
+module.exports = Part;

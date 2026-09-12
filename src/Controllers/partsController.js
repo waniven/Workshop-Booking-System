@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const Part = require('../models/partsModel');
+const partService = require('../services/partService');
+const Part = require('../models/partModel');
 
 /**
  * @openapi
@@ -14,12 +15,10 @@ const Part = require('../models/partsModel');
  */
 router.get("/parts", async (req, res) => {
   try {
-    const parts = await Part.find();
+    const parts = await partService.findAllParts();
     res.status(200).json(parts);
   } catch (error) {
-    res
-      .status(500)
-      .json({ error: "failed to fetch all parts, error: " + error.message });
+    res.status(500).json({ error: error.message });
   }
 });
 
@@ -57,8 +56,7 @@ router.get("/parts", async (req, res) => {
  */
 router.post("/parts", async (req, res) => {
   try {
-    const newPart = new Part(req.body);
-    newPart.save();
+    const newPart = await partService.addPart(req.body);
     res.status(201).json(newPart);
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -102,7 +100,7 @@ router.post("/parts", async (req, res) => {
  */
 router.patch("/parts/:id", async (req, res) => {
   try{
-     await Part.updateOne({ _id: req.params.id }, { status: req.body.status }); 
+    await partService.updateStatus(req.params.id, req.body.status); 
     res.status(201).json('Sucessfully updated part status');
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -116,7 +114,7 @@ router.patch("/parts/:id", async (req, res) => {
  *     summary: Delete a part
  *     description: Deletes a part record from the system.
  *     parameters:
- *       - name: partId
+ *       - name: id
  *         in: path
  *         required: true
  *         description: The unique identifier of the part to delete.
@@ -132,7 +130,7 @@ router.patch("/parts/:id", async (req, res) => {
  */
 router.delete("/parts/:id", async (req, res) => {
   try {
-    await Part.findByIdAndDelete(req.params.id);
+    await partService.deletePart(req.params.id);
     res.status(200).json('Sucessfully deleted part');
   } catch (error) {
     res.status(500).json({ error: error.message });

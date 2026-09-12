@@ -18,7 +18,7 @@ async function updateContact(id, data) {
 }
 
 async function deleteContact(id) {
-    await Contact.findByIdAndDelete(id);
+    return await Contact.findByIdAndDelete(id);
 }
 
 module.exports = { getAllContacts, addContact, updateContact, deleteContact };
