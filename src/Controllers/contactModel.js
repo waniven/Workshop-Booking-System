@@ -102,7 +102,6 @@ router.post("/contacts", async (req, res) => {
  *         description: Internal server error.
  */
 router.patch("/contacts/:id", async (req, res) => {
-  console.log(req);
   try{
     await contactService.updateContact(req.params.id, req.body);
     res.status(201).json('Sucessfully updated contact status');

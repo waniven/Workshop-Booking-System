@@ -1,7 +1,6 @@
 const express = require('express');
 const router = express.Router();
 const partService = require('../services/partService');
-const Part = require('../models/partModel');
 
 /**
  * @openapi

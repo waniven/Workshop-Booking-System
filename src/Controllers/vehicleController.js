@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const Vehicle = require("../models/vehicleModel");
+const vehicleService = require("../services/vehicleService");
 
 /**
  * @openapi
@@ -14,7 +14,7 @@ const Vehicle = require("../models/vehicleModel");
  */
 router.get("/vehicles", async (req, res) => {
   try {
-    const vehicles = await Vehicle.find();
+    const vehicles = await vehicleService.getAllVehicles();
     res.status(200).json(vehicles);
   } catch (error) {
     res
@@ -61,9 +61,47 @@ router.get("/vehicles", async (req, res) => {
 
 router.post("/vehicles", async (req, res) => {
   try {
-    const newVehicle = new Vehicle(req.body);
-    await newVehicle.save();
+    const newVehicle = await vehicleService.addVehicle(req.body);
     res.status(201).json(newVehicle);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+/**
+ * @openapi
+ * /vehicles/{id}:
+ *   patch:
+ *     summary: Update a vehicle.
+ *     description: Update the status of a specific vehicle in the system.
+ *     parameters:
+ *       - name: id
+ *         in: path
+ *         required: true
+ *         description: The unique identifier of the vehicle to update.
+ *         schema:
+ *           type: string
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *     responses:
+ *       200:
+ *         description: Part status updated successfully.
+ *       400:
+ *         description: Invalid input or missing status.
+ *       404:
+ *         description: Part not found.
+ *       500:
+ *         description: Internal server error.
+ */
+router.patch("/vehicles/:id", async (req, res) => {
+  try{
+    const updatestatus = await vehicleService.updateVehicle(req.params.id, req.body); 
+    console.log(updatestatus);
+    res.status(201).json('Sucessfully updated vehicle status');
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -76,7 +114,7 @@ router.post("/vehicles", async (req, res) => {
  *     summary: Delete a vehicle
  *     description: Deletes a vehicle record from the system.
  *     parameters:
- *       - name: vehicleId
+ *       - name: id
  *         in: path
  *         required: true
  *         description: The unique identifier of the vehicle to delete.
@@ -92,7 +130,7 @@ router.post("/vehicles", async (req, res) => {
  */
 router.delete("/vehicles/:id" , async (req, res) => {
   try{
-    await Vehicle.findByIdAndDelete(req.params.id);
+    await vehicleService.deleteVehicle(req.params.id);
     res.status(200).json('Sucessfully deleted vehicle')
   } catch (error) {
     res.status(500).json({ error: error.message });

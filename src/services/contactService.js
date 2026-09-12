@@ -12,8 +12,8 @@ async function addContact(newContact) {
 
 async function updateContact(id, data) {
     return await Contact.updateOne(
-      { _id: id }, 
-      { $set: data }
+        { _id: id }, 
+        { $set: data }
     );
 }
 
