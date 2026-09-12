@@ -10,7 +10,7 @@ const PORT = 3000;
 
 const vehicleRouter = require('./controllers/vehicleController');
 const partsRouter = require('./controllers/partsController');
-const contractRouter = require('./controllers/contactModel');
+const contractRouter = require('./controllers/contactController');
 
 async function startServer() {
   try {
