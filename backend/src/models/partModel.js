@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 const partSchema = new mongoose.Schema(
   {
     partNumber: {
-      type: Number,
+      type: String,
       required: [true, "Part number is required."],
       minlength: 4,
     },
