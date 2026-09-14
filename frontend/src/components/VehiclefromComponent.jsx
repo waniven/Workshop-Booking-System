@@ -1,37 +1,54 @@
 import { useState } from "react";
-import { validatePartNumber, validatePartStatus } from "../utils/validatorUtil";
+import {
+  validatePartNumber,
+  validateVehicleDate,
+} from "../utils/validatorUtil";
 
-export function PartForm() {
-  const [partNumber, setPartNumber] = useState("");
+export function VehicleForm() {
+  const [year, setYear] = useState("");
   const [manufacturer, setManufacturer] = useState("");
-  const [status, setStatus] = useState("");
+  const [model, setModel] = useState("");
+  const [modifications, setModifications] = useState("");
 
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    if (!partNumber.trim() || !manufacturer.trim() || !status) {
+    if (
+      !year ||
+      !manufacturer.trim() ||
+      !model.trim() ||
+      !modifications.trim()
+    ) {
       alert("All fields are required! Please fill out every item.");
       return;
     }
 
-    if (!validatePartNumber(partNumber)) {
-      alert("Invalid Part Number! Use only letters, numbers, and spaces.");
+    if (!validatePartNumber(manufacturer)) {
+      alert(
+        "Invalid manufacturer input. Use only letters, numbers, and spaces.",
+      );
       return;
     }
 
-    if (!validatePartStatus(status)) {
-      alert("Please select a valid status!");
+    if (!validatePartNumber(model)) {
+      alert("Invalid model input. Use only letters, numbers, and spaces.");
+      return;
+    }
+
+    if (!validateVehicleDate(year)) {
+      alert("Invalid year input. Use 1886 to next year.");
       return;
     }
 
     const formData = {
-      partNumber: partNumber,
+      year: year,
       manufacturer: manufacturer,
-      status: status,
+      model: model,
+      modifications: modifications,
     };
 
     try {
-      const response = await fetch("http://localhost:3000/api/parts", {
+      const response = await fetch("http://localhost:3000/api/vehicles", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -40,13 +57,14 @@ export function PartForm() {
       });
 
       if (response.ok) {
-        alert("Success! Part data saved to the system.");
+        alert("Success! Vehicle data saved to the system.");
 
-        setPartNumber("");
+        setYear("");
         setManufacturer("");
-        setStatus("");
+        setModel("");
+        setModifications("");
       } else {
-        alert("Server error: Failed to save part data.");
+        alert("Server error: Failed to save vehicle data.");
       }
     } catch (error) {
       console.error("Network error:", error);
@@ -73,7 +91,8 @@ export function PartForm() {
           maxWidth: "400px",
         }}
       >
-        <h1>Add Part</h1>
+        <h1 style={{ textAlign: "center" }}>Add Vehicle</h1>
+
         <label
           style={{
             display: "flex",
@@ -81,12 +100,12 @@ export function PartForm() {
             alignItems: "center",
           }}
         >
-          Part Number:
+          <span>Year:</span>
           <input
             type="text"
-            value={partNumber}
-            onChange={(e) => setPartNumber(e.target.value)}
-            style={{ marginLeft: "10px" }}
+            value={year}
+            onChange={(e) => setYear(e.target.value)}
+            style={{ width: "200px" }}
           />
         </label>
 
@@ -97,12 +116,12 @@ export function PartForm() {
             alignItems: "center",
           }}
         >
-          Manufacturer:
+          <span>Manufacturer:</span>
           <input
             type="text"
             value={manufacturer}
             onChange={(e) => setManufacturer(e.target.value)}
-            style={{ marginLeft: "10px" }}
+            style={{ width: "200px" }}
           />
         </label>
 
@@ -113,19 +132,29 @@ export function PartForm() {
             alignItems: "center",
           }}
         >
-          Status:
-          <select
-            value={status}
-            onChange={(e) => setStatus(e.target.value)}
-            style={{ marginLeft: "10px", width: "188px" }}
-          >
-            <option value="" disabled hidden>
-              Please Select
-            </option>
-            <option value="Available">Available</option>
-            <option value="Ordered">Ordered</option>
-            <option value="Requested">Requested</option>
-          </select>
+          <span>Model:</span>
+          <input
+            type="text"
+            value={model}
+            onChange={(e) => setModel(e.target.value)}
+            style={{ width: "200px" }}
+          />
+        </label>
+
+        <label
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+          }}
+        >
+          <span>Modifications:</span>
+          <input
+            type="text"
+            value={modifications}
+            onChange={(e) => setModifications(e.target.value)}
+            style={{ width: "200px" }}
+          />
         </label>
 
         <button
