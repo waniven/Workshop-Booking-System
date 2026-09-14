@@ -17,18 +17,18 @@ const contact = new mongoose.Schema(
     phoneNumber: {
       type: String,
       required: [true, "Phone Number is required."],
-      unique: [true, 'Phone Number already exists.'],
+      unique: [true, "Phone Number already exists."],
       trim: true,
       minlength: 2,
     },
     email: {
       type: String,
       required: [true, "Email is required."],
-      unique: [true, 'Email already exists.'],
+      unique: [true, "Email already exists."],
       trim: true,
       minlength: 2,
     },
-    Address: {
+    address: {
       type: String,
       required: [true, "Address is required."],
       trim: true,

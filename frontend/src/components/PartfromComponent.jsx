@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { validatePartNumber, validatePartStatus } from "../utils/validatorUtil";
+import { validateString, validatePartStatus } from "../utils/validatorUtil";
 
 export function PartForm() {
   const [partNumber, setPartNumber] = useState("");
@@ -14,7 +14,7 @@ export function PartForm() {
       return;
     }
 
-    if (!validatePartNumber(partNumber)) {
+    if (!validateString(partNumber)) {
       alert("Invalid Part Number! Use only letters, numbers, and spaces.");
       return;
     }
@@ -25,8 +25,8 @@ export function PartForm() {
     }
 
     const formData = {
-      partNumber: partNumber,
-      manufacturer: manufacturer,
+      partNumber: partNumber.trim(),
+      manufacturer: manufacturer.trim(),
       status: status,
     };
 

@@ -1,6 +1,6 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const contactService = require('../services/contactService');
+const contactService = require("../services/contactService");
 
 /**
  * @openapi
@@ -102,9 +102,9 @@ router.post("/contacts", async (req, res) => {
  *         description: Internal server error.
  */
 router.patch("/contacts/:id", async (req, res) => {
-  try{
+  try {
     await contactService.updateContact(req.params.id, req.body);
-    res.status(201).json('Sucessfully updated contact status');
+    res.status(201).json("Sucessfully updated contact status");
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -133,8 +133,8 @@ router.patch("/contacts/:id", async (req, res) => {
  */
 router.delete("/contacts/:id", async (req, res) => {
   try {
-    await contactService.deleteContact(req.params.id); 
-    res.status(200).json('Sucessfully deleted contact');
+    await contactService.deleteContact(req.params.id);
+    res.status(200).json("Sucessfully deleted contact");
   } catch (error) {
     res.status(500).json({ error: error.message });
   }

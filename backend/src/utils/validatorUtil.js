@@ -1,11 +1,17 @@
 // Phone number
 function validatePhoneNumber(phoneNumber) {
-  const regex = /^\+?\d{1,15}$/;
+  const regex = /^(0|\+)\d{1,15}$/;
   return regex.test(phoneNumber);
 }
 
+// Email
+function validateEmail(email) {
+  const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+  return regex.test(email);
+}
+
 // Part number
-function validatePartNumber(partNumber) {
+function validateString(partNumber) {
   const regex = /^[a-zA-Z0-9 ]+$/;
   return regex.test(partNumber);
 }
@@ -30,7 +36,8 @@ function validateVehicleDate(date) {
 
 module.exports = {
   validatePhoneNumber,
-  validatePartNumber,
+  validateEmail,
+  validateString,
   validatePartStatus,
   validateVehicleDate,
 };

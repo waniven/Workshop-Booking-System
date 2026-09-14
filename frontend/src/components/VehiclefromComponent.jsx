@@ -1,8 +1,5 @@
 import { useState } from "react";
-import {
-  validatePartNumber,
-  validateVehicleDate,
-} from "../utils/validatorUtil";
+import { validateString, validateVehicleDate } from "../utils/validatorUtil";
 
 export function VehicleForm() {
   const [year, setYear] = useState("");
@@ -14,7 +11,7 @@ export function VehicleForm() {
     event.preventDefault();
 
     if (
-      !year ||
+      !year.trim() ||
       !manufacturer.trim() ||
       !model.trim() ||
       !modifications.trim()
@@ -23,14 +20,14 @@ export function VehicleForm() {
       return;
     }
 
-    if (!validatePartNumber(manufacturer)) {
+    if (!validateString(manufacturer)) {
       alert(
         "Invalid manufacturer input. Use only letters, numbers, and spaces.",
       );
       return;
     }
 
-    if (!validatePartNumber(model)) {
+    if (!validateString(model)) {
       alert("Invalid model input. Use only letters, numbers, and spaces.");
       return;
     }
@@ -41,10 +38,10 @@ export function VehicleForm() {
     }
 
     const formData = {
-      year: year,
-      manufacturer: manufacturer,
-      model: model,
-      modifications: modifications,
+      year: year.trim(),
+      manufacturer: manufacturer.trim(),
+      model: model.trim(),
+      modifications: modifications.trim(),
     };
 
     try {
