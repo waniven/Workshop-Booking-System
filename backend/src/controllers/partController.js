@@ -1,6 +1,6 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const partService = require('../services/partService');
+const partService = require("../services/partService");
 
 /**
  * @openapi
@@ -44,15 +44,16 @@ router.get("/parts", async (req, res) => {
  *               manufacturer:
  *                 type: string
  *                 example: "Bilstein"
- *               status:
- *                 type: string
- *                 example: "Ordered"
+ *               stockQuantity:
+ *                 type: integer
+ *                 example: 10
  *     responses:
  *       201:
  *         description: Part created successfully.
  *       400:
  *         description: Invalid input data.
  */
+
 router.post("/parts", async (req, res) => {
   try {
     const newPart = await partService.addPart(req.body);
@@ -82,11 +83,11 @@ router.post("/parts", async (req, res) => {
  *           schema:
  *             type: object
  *             required:
- *               - status
+ *               - stockQuantity
  *             properties:
- *               status:
- *                 type: string
- *                 description: The new status of the part.
+ *               stockQuantity:
+ *                 type: integer
+ *                 example: 10
  *     responses:
  *       200:
  *         description: Part status updated successfully.
@@ -97,10 +98,14 @@ router.post("/parts", async (req, res) => {
  *       500:
  *         description: Internal server error.
  */
+
 router.patch("/parts/:id", async (req, res) => {
-  try{
-    await partService.updateStatus(req.params.id, req.body.status); 
-    res.status(201).json('Sucessfully updated part status');
+  try {
+    await partService.updateStockQuantity(
+      req.params.id,
+      req.body.stockQuantity,
+    );
+    res.status(201).json("Sucessfully updated part stock quantity.");
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -130,7 +135,7 @@ router.patch("/parts/:id", async (req, res) => {
 router.delete("/parts/:id", async (req, res) => {
   try {
     await partService.deletePart(req.params.id);
-    res.status(200).json('Sucessfully deleted part');
+    res.status(200).json("Sucessfully deleted part");
   } catch (error) {
     res.status(500).json({ error: error.message });
   }

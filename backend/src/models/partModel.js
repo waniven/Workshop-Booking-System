@@ -2,8 +2,13 @@ const mongoose = require("mongoose");
 
 const partSchema = new mongoose.Schema(
   {
+    partName: {
+      type: String,
+      required: [true, "Part name is required."],
+    },
     partNumber: {
       type: String,
+      unique: [true, "This part already exists."],
       required: [true, "Part number is required."],
       minlength: 4,
     },
@@ -13,11 +18,9 @@ const partSchema = new mongoose.Schema(
       trim: true,
       minlength: 2,
     },
-    status: {
-      type: String,
-      required: [true, "Part status is required."],
-      trim: true,
-      minlength: 2,
+    stockQuantity: {
+      type: Number,
+      default: 0,
     },
   },
   {

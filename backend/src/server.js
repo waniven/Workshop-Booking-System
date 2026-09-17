@@ -10,7 +10,7 @@ const dbURI = "mongodb://localhost:27017/workshop";
 const PORT = 3000;
 
 const vehicleRouter = require("./controllers/vehicleController");
-const partsRouter = require("./controllers/partsController");
+const partsRouter = require("./controllers/partController");
 const contractRouter = require("./controllers/contactController");
 
 async function startServer() {
