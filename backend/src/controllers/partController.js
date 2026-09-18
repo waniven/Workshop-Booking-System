@@ -1,6 +1,11 @@
 const express = require("express");
 const router = express.Router();
 const partService = require("../services/partService");
+const validate = require("../middleware/validate");
+const {
+  createPartSchema,
+  patchPartSchema,
+} = require("../validations/partValidation");
 
 /**
  * @openapi
@@ -65,7 +70,7 @@ router.get("/parts", async (req, res) => {
  *         description: Invalid input data.
  */
 
-router.post("/parts", async (req, res) => {
+router.post("/parts", validate(createPartSchema), async (req, res) => {
   try {
     const newPart = await partService.addPart(req.body);
     res.status(201).json(newPart);
@@ -111,7 +116,7 @@ router.post("/parts", async (req, res) => {
  *         description: Internal server error.
  */
 
-router.patch("/parts/:id", async (req, res) => {
+router.patch("/parts/:id", validate(patchPartSchema), async (req, res) => {
   try {
     await partService.updateStockQuantity(
       req.params.id,
