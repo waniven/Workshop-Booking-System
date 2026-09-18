@@ -1,6 +1,11 @@
 const express = require("express");
 const router = express.Router();
 const contactService = require("../services/contactService");
+const validate = require("../middleware/validate");
+const {
+  createContactSchema,
+  patchContactSchema,
+} = require("../validations/contactValidation");
 
 /**
  * @openapi
@@ -52,7 +57,7 @@ router.get("/contacts", async (req, res) => {
  *                  example: "Smith"
  *               phoneNumber:
  *                  type: string
- *                  example: "+64 123 456789"
+ *                  example: "+64123456789"
  *               email:
  *                  type: string
  *                  example: "example@domain.com"
@@ -65,7 +70,7 @@ router.get("/contacts", async (req, res) => {
  *       400:
  *         description: Invalid input data.
  */
-router.post("/contacts", async (req, res) => {
+router.post("/contacts", validate(createContactSchema), async (req, res) => {
   try {
     const newContact = await contactService.addContact(req.body);
     res.status(201).json(newContact);
@@ -104,14 +109,18 @@ router.post("/contacts", async (req, res) => {
  *       500:
  *         description: Internal server error.
  */
-router.patch("/contacts/:id", async (req, res) => {
-  try {
-    await contactService.updateContact(req.params.id, req.body);
-    res.status(201).json("Sucessfully updated contact status");
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-});
+router.patch(
+  "/contacts/:id",
+  validate(patchContactSchema),
+  async (req, res) => {
+    try {
+      await contactService.updateContact(req.params.id, req.body);
+      res.status(201).json("Sucessfully updated contact status");
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  },
+);
 
 /**
  * @openapi

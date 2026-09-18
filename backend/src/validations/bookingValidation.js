@@ -8,7 +8,9 @@ const objectIdSchema = z
   });
 
 const bookingFields = {
-  bookingDate: z.datetime({ message: "Invalid ISO 8601 Date string format" }),
+  bookingDate: z
+    .string()
+    .datetime({ message: "Invalid ISO 8601 Date string format" }),
 
   status: z.enum(["Pending", "In-Progress", "Completed", "Cancelled"], {
     errorMap: () => ({

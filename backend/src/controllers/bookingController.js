@@ -1,6 +1,8 @@
 const express = require("express");
 const router = express.Router();
 const bookingService = require("../services/bookingService");
+const validate = require("../middleware/validate");
+const { patchBookingSchema } = require("../validations/bookingValidation");
 
 /**
  * @swagger
