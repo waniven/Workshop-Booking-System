@@ -1,6 +1,11 @@
 const express = require("express");
 const router = express.Router();
 const vehicleService = require("../services/vehicleService");
+const validate = require("../middleware/validate");
+const {
+  createVehicleSchema,
+  patchVehicleSchema,
+} = require("../validations/vehicleValidation");
 
 /**
  * @openapi
@@ -94,7 +99,7 @@ router.get("/vehicles", async (req, res) => {
  *       500:
  *         description: Internal server error.
  */
-router.post("/vehicles", async (req, res) => {
+router.post("/vehicles", validate(createVehicleSchema), async (req, res) => {
   try {
     const newVehicle = await vehicleService.addVehicle(req.body);
     res.status(201).json(newVehicle);
@@ -136,17 +141,21 @@ router.post("/vehicles", async (req, res) => {
  *       500:
  *         description: Internal server error.
  */
-router.patch("/vehicles/:id", async (req, res) => {
-  try {
-    const updatestatus = await vehicleService.updateVehicle(
-      req.params.id,
-      req.body,
-    );
-    res.status(201).json("Sucessfully updated vehicle status");
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-});
+router.patch(
+  "/vehicles/:id",
+  validate(patchVehicleSchema),
+  async (req, res) => {
+    try {
+      const updatestatus = await vehicleService.updateVehicle(
+        req.params.id,
+        req.body,
+      );
+      res.status(201).json("Sucessfully updated vehicle status");
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  },
+);
 
 /**
  * @openapi
