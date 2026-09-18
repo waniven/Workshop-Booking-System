@@ -32,7 +32,7 @@ const contact = new mongoose.Schema(
       type: String,
       required: [true, "Address is required."],
       trim: true,
-      minlength: 2,
+      minlength: 5,
     },
   },
   {

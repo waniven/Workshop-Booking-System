@@ -21,7 +21,14 @@ async function addBooking(newBooking) {
 }
 
 async function updateBooking(id, data) {
-  return await Booking.updateOne({ _id: id }, { $set: data });
+  return await Booking.findByIdAndUpdate(
+    id,
+    { $set: data },
+    {
+      new: true,
+      runValidators: true,
+    },
+  );
 }
 
 async function deleteBooking(id) {
