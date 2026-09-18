@@ -7,6 +7,7 @@ const contactService = require("../services/contactService");
  * /contacts:
  *   get:
  *     summary: Retrieve a list of contacts
+ *     tags: [Contacts]
  *     description: Fetches all contacts from the system.
  *     responses:
  *       200:
@@ -28,6 +29,7 @@ router.get("/contacts", async (req, res) => {
  * /contacts:
  *   post:
  *     summary: Add a new contact
+ *     tags: [Contacts]
  *     description: Creates a new contact record in the system.
  *     requestBody:
  *       required: true
@@ -77,6 +79,7 @@ router.post("/contacts", async (req, res) => {
  * /contacts/{id}:
  *   patch:
  *     summary: Update a contact contact
+ *     tags: [Contacts]
  *     description: Update the details of a specific contact in the system.
  *     parameters:
  *       - name: id
@@ -116,6 +119,7 @@ router.patch("/contacts/:id", async (req, res) => {
  *   delete:
  *     summary: Delete a contact
  *     description: Deletes a contact record from the system.
+ *     tags: [Contacts]
  *     parameters:
  *       - name: id
  *         in: path

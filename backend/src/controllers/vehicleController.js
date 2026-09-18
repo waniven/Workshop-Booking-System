@@ -4,13 +4,65 @@ const vehicleService = require("../services/vehicleService");
 
 /**
  * @openapi
+ * components:
+ *   schemas:
+ *     Vehicle:
+ *       type: object
+ *       required:
+ *         - year
+ *         - manufacturer
+ *         - model
+ *       properties:
+ *         year:
+ *           type: integer
+ *           example: 2022
+ *         manufacturer:
+ *           type: string
+ *           example: "Toyota"
+ *         model:
+ *           type: string
+ *           example: "Hilux"
+ */
+
+/**
+ * @openapi
  * /vehicles:
  *   get:
  *     summary: Retrieve a list of vehicles
+ *     tags: [Vehicles]
  *     description: Fetches all vehicles from the system.
  *     responses:
  *       200:
  *         description: A successful response with a list of vehicles.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 properties:
+ *                   _id:
+ *                     type: string
+ *                     example: "650af3e1122334455667788b"
+ *                   year:
+ *                     type: integer
+ *                     example: 2022
+ *                   manufacturer:
+ *                     type: string
+ *                     example: "Toyota"
+ *                   model:
+ *                     type: string
+ *                     example: "Hilux"
+ *       500:
+ *         description: Server error.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: "Failed to fetch all vehicles, error: Database disconnected"
  */
 router.get("/vehicles", async (req, res) => {
   try {
@@ -28,37 +80,39 @@ router.get("/vehicles", async (req, res) => {
  * /vehicles:
  *   post:
  *     summary: Add a new vehicle
+ *     tags: [Vehicles]
  *     description: Creates a new vehicle record in the system.
  *     requestBody:
  *       required: true
  *       content:
  *         application/json:
  *           schema:
- *             type: object
- *             required:
- *               - year
- *               - manufacturer
- *               - model
- *             properties:
- *               year:
- *                 type: integer
- *                 example: 2022
- *               manufacturer:
- *                 type: string
- *                 example: "Toyota"
- *               model:
- *                 type: string
- *                 example: "Hilux"
- *               modifications:
- *                 type: string
- *                 example: "Lift kit, snorkel"
+ *             $ref: '#/components/schemas/Vehicle'
  *     responses:
  *       201:
  *         description: Vehicle created successfully.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 _id:
+ *                   type: string
+ *                   example: "650af3e1122334455667788b"
+ *                 year:
+ *                   type: integer
+ *                   example: 2022
+ *                 manufacturer:
+ *                   type: string
+ *                   example: "Toyota"
+ *                 model:
+ *                   type: string
+ *                   example: "Hilux"
  *       400:
  *         description: Invalid input data.
+ *       500:
+ *         description: Internal server error.
  */
-
 router.post("/vehicles", async (req, res) => {
   try {
     const newVehicle = await vehicleService.addVehicle(req.body);
@@ -72,15 +126,14 @@ router.post("/vehicles", async (req, res) => {
  * @openapi
  * /vehicles/{id}:
  *   patch:
- *     summary: Update a vehicle.
- *     description: Update the status of a specific vehicle in the system.
+ *     summary: Update a vehicle
+ *     tags: [Vehicles]
+ *     description: Update specific fields or details of a vehicle in the system.
  *     parameters:
  *       - name: id
  *         in: path
  *         required: true
  *         description: The unique identifier of the vehicle to update.
- *         schema:
- *           type: string
  *     requestBody:
  *       required: true
  *       content:
@@ -88,20 +141,28 @@ router.post("/vehicles", async (req, res) => {
  *           schema:
  *             type: object
  *     responses:
- *       200:
- *         description: Part status updated successfully.
+ *       201:
+ *         description: Vehicle updated successfully.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: string
+ *               example: "Sucessfully updated vehicle status"
  *       400:
- *         description: Invalid input or missing status.
+ *         description: Invalid input details.
  *       404:
- *         description: Part not found.
+ *         description: Vehicle not found.
  *       500:
  *         description: Internal server error.
  */
 router.patch("/vehicles/:id", async (req, res) => {
-  try{
-    const updatestatus = await vehicleService.updateVehicle(req.params.id, req.body); 
+  try {
+    const updatestatus = await vehicleService.updateVehicle(
+      req.params.id,
+      req.body,
+    );
     console.log(updatestatus);
-    res.status(201).json('Sucessfully updated vehicle status');
+    res.status(201).json("Sucessfully updated vehicle status");
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -112,26 +173,30 @@ router.patch("/vehicles/:id", async (req, res) => {
  * /vehicles/{id}:
  *   delete:
  *     summary: Delete a vehicle
+ *     tags: [Vehicles]
  *     description: Deletes a vehicle record from the system.
  *     parameters:
  *       - name: id
  *         in: path
  *         required: true
  *         description: The unique identifier of the vehicle to delete.
- *         schema:
- *           type: string
  *     responses:
- *       204:
- *         description: vehicle deleted successfully.
+ *       200:
+ *         description: Vehicle deleted successfully.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: string
+ *               example: "Sucessfully deleted vehicle"
  *       404:
- *         description: vehicle not found.
+ *         description: Vehicle not found.
  *       400:
  *         description: Invalid vehicle ID supplied.
  */
-router.delete("/vehicles/:id" , async (req, res) => {
-  try{
+router.delete("/vehicles/:id", async (req, res) => {
+  try {
     await vehicleService.deleteVehicle(req.params.id);
-    res.status(200).json('Sucessfully deleted vehicle')
+    res.status(200).json("Sucessfully deleted vehicle");
   } catch (error) {
     res.status(500).json({ error: error.message });
   }

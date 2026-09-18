@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const bookingSchema = new mongoose.Schema(
+const booking = new mongoose.Schema(
   {
     bookingDate: {
       type: Date,
@@ -38,5 +38,5 @@ const bookingSchema = new mongoose.Schema(
   { timestamps: true },
 );
 
-const Booking = mongoose.model("Booking", bookingSchema);
+const Booking = mongoose.model("Booking", booking);
 module.exports = Booking;

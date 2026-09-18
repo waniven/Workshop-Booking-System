@@ -19,10 +19,6 @@ const vehicleSchema = new mongoose.Schema(
       trim: true,
       minlength: 2,
     },
-    modifications: {
-      type: String,
-      trim: true,
-    },
   },
   {
     timestamps: true,

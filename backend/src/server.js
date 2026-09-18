@@ -12,6 +12,7 @@ const PORT = 3000;
 const vehicleRouter = require("./controllers/vehicleController");
 const partsRouter = require("./controllers/partController");
 const contractRouter = require("./controllers/contactController");
+const bookingRouter = require("./controllers/bookingController");
 
 async function startServer() {
   try {
@@ -55,5 +56,6 @@ app.use("/swagger", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 app.use("/api", vehicleRouter);
 app.use("/api", partsRouter);
 app.use("/api", contractRouter);
+app.use("/api", bookingRouter);
 
 startServer();

@@ -7,6 +7,7 @@ const partService = require("../services/partService");
  * /parts:
  *   get:
  *     summary: Retrieve a list of parts
+ *     tags: [Parts]
  *     description: Fetches all parts from the system.
  *     responses:
  *       200:
@@ -26,6 +27,7 @@ router.get("/parts", async (req, res) => {
  * /parts:
  *   post:
  *     summary: Add a new part
+ *     tags: [Parts]
  *     description: Creates a new part record in the system.
  *     requestBody:
  *       required: true
@@ -68,6 +70,7 @@ router.post("/parts", async (req, res) => {
  * /parts/{id}:
  *   patch:
  *     summary: Update a part status
+ *     tags: [Parts]
  *     description: Update the status of a specific part in the system.
  *     parameters:
  *       - name: id
@@ -116,6 +119,7 @@ router.patch("/parts/:id", async (req, res) => {
  * /parts/{id}:
  *   delete:
  *     summary: Delete a part
+ *     tags: [Parts]
  *     description: Deletes a part record from the system.
  *     parameters:
  *       - name: id
