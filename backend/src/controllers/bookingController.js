@@ -2,7 +2,10 @@ const express = require("express");
 const router = express.Router();
 const bookingService = require("../services/bookingService");
 const validate = require("../middleware/validate");
-const { patchBookingSchema } = require("../validations/bookingValidation");
+const {
+  createBookingSchema,
+  patchBookingSchema,
+} = require("../validations/bookingValidation");
 
 /**
  * @swagger
@@ -48,37 +51,6 @@ const { patchBookingSchema } = require("../validations/bookingValidation");
  *           type: string
  *           example: "Squeaking noise when braking and routine oil change."
  */
-
-/**
- * @swagger
- * /bookings:
- *   post:
- *     summary: Create a new workshop booking
- *     tags: [Bookings]
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             $ref: '#/components/schemas/Booking'
- *     responses:
- *       201:
- *         description: Booking created successfully.
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/Booking'
- *       400:
- *         description: Missing compulsory fields or bad data.
- */
-router.post("/bookings", async (req, res) => {
-  try {
-    const newBooking = await bookingService.addBooking(req.body);
-    res.status(201).json(newBooking);
-  } catch (error) {
-    res.status(400).json({ error: error.message });
-  }
-});
 
 /**
  * @swagger
@@ -141,6 +113,37 @@ router.get("/bookings/:id", async (req, res) => {
 
 /**
  * @swagger
+ * /bookings:
+ *   post:
+ *     summary: Create a new workshop booking
+ *     tags: [Bookings]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/Booking'
+ *     responses:
+ *       201:
+ *         description: Booking created successfully.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Booking'
+ *       400:
+ *         description: Missing compulsory fields or bad data.
+ */
+router.post("/bookings", validate(createBookingSchema), async (req, res) => {
+  try {
+    const newBooking = await bookingService.addBooking(req.body);
+    res.status(201).json(newBooking);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+});
+
+/**
+ * @swagger
  * /bookings/{id}:
  *   patch:
  *     summary: Partially update an existing booking safely
@@ -174,19 +177,26 @@ router.get("/bookings/:id", async (req, res) => {
  *       404:
  *         description: Booking not found.
  */
-router.patch("/bookings/:id", async (req, res) => {
-  try {
-    const result = await bookingService.updateBooking(req.params.id, req.body);
+router.patch(
+  "/bookings/:id",
+  validate(patchBookingSchema),
+  async (req, res) => {
+    try {
+      const result = await bookingService.updateBooking(
+        req.params.id,
+        req.body,
+      );
 
-    if (!result) {
-      return res.status(404).json({ error: "Booking not found" });
+      if (!result) {
+        return res.status(404).json({ error: "Booking not found" });
+      }
+
+      res.status(200).json(result);
+    } catch (error) {
+      res.status(400).json({ error: error.message });
     }
-
-    res.status(200).json(result);
-  } catch (error) {
-    res.status(400).json({ error: error.message });
-  }
-});
+  },
+);
 
 /**
  * @swagger
