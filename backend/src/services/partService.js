@@ -1,12 +1,12 @@
 const Part = require("../models/partModel");
 
 async function findAllParts() {
-  return Part.find();
+  return await Part.find();
 }
 
 async function addPart(newPart) {
   const createdPart = new Part(newPart);
-  createdPart.save();
+  await createdPart.save();
   return createdPart;
 }
 
