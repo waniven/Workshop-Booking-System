@@ -56,7 +56,7 @@ router.get("/contacts", async (req, res) => {
  *               email:
  *                  type: string
  *                  example: "example@domain.com"
- *               Address:
+ *               address:
  *                  type: string
  *                  example: "123 street "
  *     responses:

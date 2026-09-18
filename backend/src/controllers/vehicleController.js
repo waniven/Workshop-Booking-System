@@ -34,25 +34,6 @@ const vehicleService = require("../services/vehicleService");
  *     responses:
  *       200:
  *         description: A successful response with a list of vehicles.
- *         content:
- *           application/json:
- *             schema:
- *               type: array
- *               items:
- *                 type: object
- *                 properties:
- *                   _id:
- *                     type: string
- *                     example: "650af3e1122334455667788b"
- *                   year:
- *                     type: integer
- *                     example: 2022
- *                   manufacturer:
- *                     type: string
- *                     example: "Toyota"
- *                   model:
- *                     type: string
- *                     example: "Hilux"
  *       500:
  *         description: Server error.
  *         content:
@@ -161,7 +142,6 @@ router.patch("/vehicles/:id", async (req, res) => {
       req.params.id,
       req.body,
     );
-    console.log(updatestatus);
     res.status(201).json("Sucessfully updated vehicle status");
   } catch (error) {
     res.status(500).json({ error: error.message });

@@ -36,18 +36,27 @@ router.get("/parts", async (req, res) => {
  *           schema:
  *             type: object
  *             required:
+ *               - partName
  *               - partNumber
  *               - manufacturer
- *               - status
  *             properties:
+ *               partName:
+ *                 type: string
+ *                 trim: true
+ *                 example: Suspension
  *               partNumber:
- *                 type: integer
- *                 example: 16165845315
+ *                 type: string
+ *                 minLength: 4
+ *                 trim: true
+ *                 example: BI34901980394
  *               manufacturer:
  *                 type: string
- *                 example: "Bilstein"
+ *                 minLength: 2
+ *                 trim: true
+ *                 example: Bilstein
  *               stockQuantity:
  *                 type: integer
+ *                 default: 0
  *                 example: 10
  *     responses:
  *       201:

@@ -69,9 +69,9 @@ const bookingService = require("../services/bookingService");
  *       400:
  *         description: Missing compulsory fields or bad data.
  */
-router.post("/", async (req, res) => {
+router.post("/bookings", async (req, res) => {
   try {
-    const newBooking = await addBooking(req.body);
+    const newBooking = await bookingService.addBooking(req.body);
     res.status(201).json(newBooking);
   } catch (error) {
     res.status(400).json({ error: error.message });
@@ -94,9 +94,9 @@ router.post("/", async (req, res) => {
  *               items:
  *                 $ref: '#/components/schemas/Booking'
  */
-router.get("/", async (req, res) => {
+router.get("/bookings", async (req, res) => {
   try {
-    const bookings = await getAllBookings();
+    const bookings = await bookingService.getAllBookings();
     res.status(200).json(bookings);
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -127,9 +127,9 @@ router.get("/", async (req, res) => {
  *       404:
  *         description: Booking not found.
  */
-router.get("/:id", async (req, res) => {
+router.get("/bookings/:id", async (req, res) => {
   try {
-    const booking = await getBookingById(req.params.id);
+    const booking = await bookingService.getBookingById(req.params.id);
     if (!booking) return res.status(404).json({ error: "Booking not found" });
     res.status(200).json(booking);
   } catch (error) {
@@ -140,13 +140,16 @@ router.get("/:id", async (req, res) => {
 /**
  * @swagger
  * /bookings/{id}:
- *   put:
- *     summary: Update an existing booking
+ *   patch:
+ *     summary: Partially update an existing booking safely
  *     tags: [Bookings]
  *     parameters:
  *       - in: path
  *         name: id
  *         required: true
+ *         schema:
+ *           type: string
+ *         description: The booking ID
  *     requestBody:
  *       required: true
  *       content:
@@ -156,7 +159,8 @@ router.get("/:id", async (req, res) => {
  *             properties:
  *               status:
  *                 type: string
- *                 example: "In Progress"
+ *                 enum: ["Pending", "In-Progress", "Completed", "Cancelled"]
+ *                 example: "In-Progress"
  *               notes:
  *                 type: string
  *                 example: "Front brake pads completely worn down. Replacing now."
@@ -164,11 +168,18 @@ router.get("/:id", async (req, res) => {
  *       200:
  *         description: Booking updated successfully.
  *       400:
- *         description: Bad request.
+ *         description: Bad request / Validation failed.
+ *       404:
+ *         description: Booking not found.
  */
-router.put("/:id", async (req, res) => {
+router.patch("/bookings/:id", async (req, res) => {
   try {
-    const result = await updateBooking(req.params.id, req.body);
+    const result = await bookingService.updateBooking(req.params.id, req.body);
+
+    if (!result) {
+      return res.status(404).json({ error: "Booking not found" });
+    }
+
     res.status(200).json(result);
   } catch (error) {
     res.status(400).json({ error: error.message });
@@ -191,9 +202,9 @@ router.put("/:id", async (req, res) => {
  *       404:
  *         description: Booking not found.
  */
-router.delete("/:id", async (req, res) => {
+router.delete("/bookings/:id", async (req, res) => {
   try {
-    const deletedBooking = await deleteBooking(req.params.id);
+    const deletedBooking = await bookingService.deleteBooking(req.params.id);
     if (!deletedBooking)
       return res.status(404).json({ error: "Booking not found" });
     res.status(200).json({ message: "Booking successfully deleted" });
