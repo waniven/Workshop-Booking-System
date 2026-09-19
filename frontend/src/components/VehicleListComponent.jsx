@@ -25,6 +25,28 @@ export function VehicleList() {
     fetchAllVehicles();
   }, []);
 
+  const handleDelete = async (id, event) => {
+    event.stopPropagation();
+    if (!window.confirm("Are you sure you want to delete this vehicle?"))
+      return;
+
+    try {
+      const response = await fetch(`http://localhost:3000/api/vehicles/${id}`, {
+        method: "DELETE",
+      });
+
+      if (response.ok) {
+        alert("Vehicle removed successfully.");
+        setVehicles((prev) => prev.filter((b) => b._id !== id));
+      } else {
+        const errorBody = await response.json().catch(() => ({}));
+        alert(`Request Error: ${response.status} ${JSON.stringify(errorBody)}`);
+      }
+    } catch (err) {
+      alert("Error processing delete operation: " + err.message);
+    }
+  };
+
   if (isLoading)
     return (
       <div style={{ textAlign: "center", padding: "40px" }}>
@@ -40,7 +62,7 @@ export function VehicleList() {
   if (vehicles.length === 0)
     return (
       <div style={{ textAlign: "center", padding: "40px" }}>
-        No active vehicles found.
+        No vehicles found.
       </div>
     );
 
@@ -86,6 +108,31 @@ export function VehicleList() {
 
               <strong style={{ color: "#666" }}>Model:</strong>
               <span>{vehicle.model}</span>
+            </div>
+
+            {/* Footer Buttons Action Layout */}
+            <div
+              style={{
+                display: "flex",
+                gap: "10px",
+                marginTop: "10px",
+                justifyContent: "flex-end",
+              }}
+            >
+              <button
+                type="button"
+                onClick={(e) => handleDelete(vehicle._id, e)}
+                style={{
+                  padding: "6px 14px",
+                  backgroundColor: "#dc3545",
+                  color: "white",
+                  border: "none",
+                  borderRadius: "4px",
+                  cursor: "pointer",
+                }}
+              >
+                Delete
+              </button>
             </div>
           </div>
         ))}

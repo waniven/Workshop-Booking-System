@@ -41,7 +41,8 @@ export function BookingList() {
         alert("Booking removed successfully.");
         setBookings((prev) => prev.filter((b) => b._id !== id));
       } else {
-        alert("Failed to delete booking from database.");
+        const errorBody = await response.json().catch(() => ({}));
+        alert(`Request Error: ${response.status} ${JSON.stringify(errorBody)}`);
       }
     } catch (err) {
       alert("Error processing delete operation: " + err.message);
