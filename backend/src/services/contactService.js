@@ -4,6 +4,10 @@ async function getAllContacts() {
   return await Contact.find();
 }
 
+async function getContactById(id) {
+  return await Contact.findOne({ _id: id });
+}
+
 async function addContact(newContact) {
   const contact = new Contact(newContact);
   await contact.save();
@@ -18,4 +22,10 @@ async function deleteContact(id) {
   return await Contact.findByIdAndDelete(id);
 }
 
-module.exports = { getAllContacts, addContact, updateContact, deleteContact };
+module.exports = {
+  getAllContacts,
+  getContactById,
+  addContact,
+  updateContact,
+  deleteContact,
+};

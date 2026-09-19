@@ -31,6 +31,32 @@ router.get("/contacts", async (req, res) => {
 
 /**
  * @openapi
+ * /contacts/{id}:
+ *   get:
+ *     summary: Retrieve a specific contact by ID
+ *     tags: [Contacts]
+ *     description: A single contacts from the system.
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *     responses:
+ *       200:
+ *         description: A successful response with a list of contacts.
+ */
+router.get("/contacts/:id", async (req, res) => {
+  try {
+    const contact = await contactService.getContactById(req.params.id);
+    res.status(200).json(contact);
+  } catch (error) {
+    res
+      .status(500)
+      .json({ error: "failed to fetch all contact, error: " + error.message });
+  }
+});
+
+/**
+ * @openapi
  * /contacts:
  *   post:
  *     summary: Add a new contact

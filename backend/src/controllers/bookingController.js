@@ -87,10 +87,6 @@ router.get("/bookings", async (req, res) => {
  *       - in: path
  *         name: id
  *         required: true
- *         schema:
- *           type: string
- *         description: The booking ID
- *         example: "650af3b987654321098765cd"
  *     responses:
  *       200:
  *         description: Booking found.
