@@ -95,7 +95,6 @@ export function BookingList() {
           style={{
             padding: "6px 14px",
             backgroundColor: "#5fa8e7",
-            color: "white",
             border: "none",
             borderRadius: "4px",
             cursor: "pointer",
@@ -188,7 +187,7 @@ export function BookingList() {
                   cursor: "pointer",
                 }}
               >
-                Enter
+                View
               </button>
               <button
                 type="button"

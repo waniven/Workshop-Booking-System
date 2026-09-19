@@ -219,9 +219,13 @@ export function BookingForm() {
             type="button"
             style={{
               padding: "8px 16px",
+              width: "120px",
               alignSelf: "center",
               display: "block",
-              margin: "10px auto 0",
+              backgroundColor: "#5fa8e7",
+              border: "none",
+              borderRadius: "4px",
+              cursor: "pointer",
             }}
             onClick={toggleAddContactFormVisibility}
           >
@@ -241,9 +245,13 @@ export function BookingForm() {
             type="button"
             style={{
               padding: "8px 16px",
+              width: "120px",
               alignSelf: "center",
               display: "block",
-              margin: "10px auto 0",
+              backgroundColor: "#5fa8e7",
+              border: "none",
+              borderRadius: "4px",
+              cursor: "pointer",
             }}
             onClick={toggleAddVehicleFormVisibility}
           >
@@ -272,6 +280,10 @@ export function BookingForm() {
               marginTop: "10px",
               padding: "8px 16px",
               alignSelf: "center",
+              backgroundColor: "#5fa8e7",
+              border: "none",
+              borderRadius: "4px",
+              cursor: "pointer",
             }}
           >
             Submit Booking

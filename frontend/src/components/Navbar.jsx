@@ -49,12 +49,12 @@ const Navbar = () => {
         }
 
         .nav-item-link:hover {
-          color: #00bcd4;
+          color: #5fa8e7;
         }
 
         .nav-item-link.active {
-          color: #00bcd4;
-          border-bottom: 2px solid #00bcd4;
+          color: #5fa8e7;
+          border-bottom: 2px solid #5fa8e7;
         }
 
         /* Invisible spacer that mirrors the logo width to keep centering mathematically perfect */

@@ -110,6 +110,9 @@ export function BookingDetail() {
           style={{
             marginBottom: "20px",
             padding: "6px 12px",
+            backgroundColor: "#5fa8e7",
+            border: "none",
+            borderRadius: "4px",
             cursor: "pointer",
           }}
           disabled={isEditing}

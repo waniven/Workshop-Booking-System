@@ -139,7 +139,7 @@ export function ContactList() {
                   cursor: "pointer",
                 }}
               >
-                Enter
+                View
               </button>
               <button
                 type="button"
