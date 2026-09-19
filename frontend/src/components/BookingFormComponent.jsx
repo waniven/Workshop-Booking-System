@@ -3,6 +3,7 @@ import { VehicleForm } from "./VehicleFormComponent";
 import { DBDropdown } from "./DBDropdown";
 import { useState } from "react";
 import { validateBookingStatus } from "../utils/validatorUtil";
+import { useNavigate } from "react-router-dom";
 
 export function BookingForm() {
   const [showAddContactForm, setShowAddContactForm] = useState(false);
@@ -16,6 +17,8 @@ export function BookingForm() {
   const [contact, setContact] = useState("");
   const [vehicle, setVehicle] = useState("");
   const [notes, setNotes] = useState("");
+
+  const navigate = useNavigate();
 
   const toggleAddContactFormVisibility = () =>
     setShowAddContactForm(!showAddContactForm);
@@ -63,6 +66,7 @@ export function BookingForm() {
         setContact("");
         setVehicle("");
         setNotes("");
+        navigate(`/bookings`);
       } else {
         const errorBody = await response.json().catch(() => ({}));
         alert(`Server error: ${response.status} ${JSON.stringify(errorBody)}`);

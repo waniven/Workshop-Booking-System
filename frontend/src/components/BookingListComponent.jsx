@@ -81,12 +81,29 @@ export function BookingList() {
     <div style={{ maxWidth: "600px", margin: "0 auto", padding: "20px" }}>
       <h1
         style={{
-          marginBottom: "20px",
+          marginBottom: "0px",
           paddingBottom: "20px",
         }}
       >
         System Bookings
       </h1>
+
+      <div style={{ maxWidth: "600px", margin: "0 auto", padding: "20px" }}>
+        <button
+          type="button"
+          onClick={() => navigate(`/bookings/create`)}
+          style={{
+            padding: "6px 14px",
+            backgroundColor: "#5fa8e7",
+            color: "white",
+            border: "none",
+            borderRadius: "4px",
+            cursor: "pointer",
+          }}
+        >
+          Create Booking
+        </button>
+      </div>
 
       <div style={{ display: "flex", flexDirection: "column", gap: "15px" }}>
         {bookings.map((booking) => (
