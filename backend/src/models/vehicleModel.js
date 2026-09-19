@@ -17,7 +17,7 @@ const vehicleSchema = new mongoose.Schema(
       type: String,
       required: [true, "Vehicle model is required."],
       trim: true,
-      minlength: 2,
+      minlength: 1,
     },
   },
   {

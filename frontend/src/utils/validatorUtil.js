@@ -17,8 +17,8 @@ function validateString(partNumber) {
 }
 
 // Status validation
-function validatePartStatus(status) {
-  const regex = /^(Available|Ordered|Requested|)$/;
+function validateBookingStatus(status) {
+  const regex = /^(Pending|In-Progress|Completed|Cancelled|)$/;
   return regex.test(status);
 }
 
@@ -45,7 +45,7 @@ export {
   validatePhoneNumber,
   validateEmail,
   validateString,
-  validatePartStatus,
+  validateBookingStatus,
   validateVehicleDate,
   validateStockQuantity,
 };

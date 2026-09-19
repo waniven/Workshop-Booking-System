@@ -39,7 +39,7 @@ export function PartForm() {
       partName: partName.trim(),
       partNumber: partNumber.trim(),
       manufacturer: manufacturer.trim(),
-      stockQuantity: stockQuantity.trim(),
+      stockQuantity: Number(stockQuantity.trim()),
     };
 
     try {
@@ -59,7 +59,8 @@ export function PartForm() {
         setManufacturer("");
         setStockQuantity("");
       } else {
-        alert("Server error: Failed to save part data.");
+        const errorBody = await response.json().catch(() => ({}));
+        alert(`Server error: ${response.status} ${JSON.stringify(errorBody)}`);
       }
     } catch (error) {
       console.error("Network error:", error);
@@ -145,7 +146,7 @@ export function PartForm() {
         >
           Stock Quantity:
           <input
-            type="text"
+            type="number"
             value={stockQuantity}
             onChange={(e) => setStockQuantity(e.target.value)}
             style={{ marginLeft: "10px" }}

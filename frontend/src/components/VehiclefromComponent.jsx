@@ -32,7 +32,7 @@ export function VehicleForm() {
     }
 
     const formData = {
-      year: year.trim(),
+      year: Number(year.trim()),
       manufacturer: manufacturer.trim(),
       model: model.trim(),
     };
@@ -53,11 +53,12 @@ export function VehicleForm() {
         setManufacturer("");
         setModel("");
       } else {
-        alert("Server error: Failed to save vehicle data.");
+        const errorBody = await response.json().catch(() => ({}));
+        alert(`Server error: ${response.status} ${JSON.stringify(errorBody)}`);
       }
     } catch (error) {
       console.error("Network error:", error);
-      alert("Network error: Could not connect to the server: " + error);
+      alert("Network error: Could not connect to the server: " + error.message);
     }
   };
 
@@ -91,7 +92,7 @@ export function VehicleForm() {
         >
           <span>Year:</span>
           <input
-            type="text"
+            type="string"
             value={year}
             onChange={(e) => setYear(e.target.value)}
             style={{ width: "200px" }}
@@ -123,7 +124,7 @@ export function VehicleForm() {
         >
           <span>Model:</span>
           <input
-            type="text"
+            type="number"
             value={model}
             onChange={(e) => setModel(e.target.value)}
             style={{ width: "200px" }}

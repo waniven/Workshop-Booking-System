@@ -1,60 +1,47 @@
 import { useState } from "react";
-import {
-  validatePhoneNumber,
-  validateEmail,
-  validateString,
-} from "../utils/validatorUtil";
+import { validateBookingStatus } from "../utils/validatorUtil";
 
-export function ContactForm() {
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [phoneNumber, setPhoneNumber] = useState("");
-  const [email, setEmail] = useState("");
-  const [address, setAddress] = useState("");
+export function BookingFrom() {
+  const [bookingDate, setBookingDate] = useState("");
+  const [status, setStatus] = useState("");
+  const [contact, setContact] = useState("");
+  const [vehicle, setVehicle] = useState("");
+  const [parts, setParts] = useState("");
+  const [notes, setNotes] = useState("");
 
   const handleSubmit = async (event) => {
     event.preventDefault();
 
     if (
-      !firstName.trim() ||
-      !lastName.trim() ||
-      !phoneNumber.trim() ||
-      !email.trim()
+      !bookingDate.trim() ||
+      !status.trim() ||
+      !contact.trim() ||
+      !vehicle.trim()
     ) {
-      alert("All fields are required. Please fill out every item.");
+      alert(
+        "Please fill in all manditory fields: date, status, contact, and vehicle.",
+      );
       return;
     }
 
-    if (!validateString(firstName)) {
-      alert("Invalid First Name. Use only letters, numbers, and spaces.");
+    if (!validateBookingStatus(status)) {
+      alert("Status must be Pending, In-Progress, Completed, or Cancelled");
       return;
     }
 
-    if (!validateString(lastName)) {
-      alert("Invalid Last Name. Use only letters, numbers, and spaces.");
-      return;
-    }
-
-    if (!validateEmail(email)) {
-      alert("Invalid Email. follow user@domain.com schema.");
-      return;
-    }
-
-    if (!validatePhoneNumber(phoneNumber)) {
-      alert("Invalid Phone Number. Use number code e.g +64 or leading 0.");
-      return;
-    }
+    //check parts ammount used is not < 1
 
     const formData = {
-      firstName: firstName.trim(),
-      lastName: lastName.trim(),
-      phoneNumber: phoneNumber,
-      email: email.toLocaleLowerCase().trim(),
-      address: address.trim(),
+      bookingDate: bookingDate.trim(),
+      status: status.trim(),
+      contact: contact,
+      vehicle: vehicle,
+      //parts: parts,
+      notes: notes,
     };
 
     try {
-      const response = await fetch("http://localhost:3000/api/contacts", {
+      const response = await fetch("http://localhost:3000/api/bookings", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -63,12 +50,13 @@ export function ContactForm() {
       });
 
       if (response.ok) {
-        alert("Success! Contact data saved to the system.");
-        setFirstName("");
-        setLastName("");
-        setPhoneNumber("");
-        setEmail("");
-        setAddress("");
+        alert("Success! booking data saved to the system.");
+        setBookingDate("");
+        setStatus("");
+        setContact("");
+        setVehicle("");
+        setParts("");
+        setNotes("");
       } else {
         const errorBody = await response.json().catch(() => ({}));
         alert(`Server error: ${response.status} ${JSON.stringify(errorBody)}`);
@@ -98,7 +86,8 @@ export function ContactForm() {
           maxWidth: "400px",
         }}
       >
-        <h1>Add Contact</h1>
+        <h1>Add Booking</h1>
+
         <label
           style={{
             display: "flex",
@@ -106,11 +95,44 @@ export function ContactForm() {
             alignItems: "center",
           }}
         >
-          First Name:
+          Date:
           <input
             type="text"
-            value={firstName}
-            onChange={(e) => setFirstName(e.target.value)}
+            value={bookingDate}
+            onChange={(e) => setBookingDate(e.target.value)}
+            style={{ marginLeft: "10px" }}
+          />
+        </label>
+
+        <label style={{ display: "block" }}>
+          Status:
+          <select
+            value={status}
+            onChange={(e) => setStatus(e.target.value)}
+            style={{ marginLeft: "10px" }}
+          >
+            <option value="" disabled hidden>
+              Select Status
+            </option>
+            <option value="Pending">Pending</option>
+            <option value="In-Progress">In-Progress</option>
+            <option value="Completed">Completed</option>
+            <option value="Cancelled">Cancelled</option>
+          </select>
+        </label>
+
+        <label
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+          }}
+        >
+          Contact:
+          <input
+            type="text"
+            value={contact}
+            onChange={(e) => setContact(e.target.value)}
             style={{ marginLeft: "10px" }}
           />
         </label>
@@ -122,11 +144,11 @@ export function ContactForm() {
             alignItems: "center",
           }}
         >
-          Last Name:
+          Vehicle:
           <input
             type="text"
-            value={lastName}
-            onChange={(e) => setLastName(e.target.value)}
+            value={vehicle}
+            onChange={(e) => setVehicle(e.target.value)}
             style={{ marginLeft: "10px" }}
           />
         </label>
@@ -138,11 +160,11 @@ export function ContactForm() {
             alignItems: "center",
           }}
         >
-          Phone Number:
+          Parts:
           <input
             type="text"
-            value={phoneNumber}
-            onChange={(e) => setPhoneNumber(e.target.value)}
+            value={parts}
+            onChange={(e) => setParts(e.target.value)}
             style={{ marginLeft: "10px" }}
           />
         </label>
@@ -154,27 +176,11 @@ export function ContactForm() {
             alignItems: "center",
           }}
         >
-          Email:
+          Notes:
           <input
             type="text"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            style={{ marginLeft: "10px" }}
-          />
-        </label>
-
-        <label
-          style={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-          }}
-        >
-          Address:
-          <input
-            type="text"
-            value={address}
-            onChange={(e) => setAddress(e.target.value)}
+            value={notes}
+            onChange={(e) => setNotes(e.target.value)}
             style={{ marginLeft: "10px" }}
           />
         </label>

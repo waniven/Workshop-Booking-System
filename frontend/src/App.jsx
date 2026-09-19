@@ -1,6 +1,7 @@
 import { ContactForm } from "./components/ContactFromComponent";
 import { VehicleForm } from "./components/VehiclefromComponent";
 import { PartForm } from "./components/PartfromComponent";
+import { BookingFrom } from "./components/BookingFormComponent";
 
 function App() {
   return (
@@ -8,6 +9,7 @@ function App() {
       <ContactForm />
       <VehicleForm />
       <PartForm />
+      <BookingFrom />
     </div>
   );
 }

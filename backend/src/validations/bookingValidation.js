@@ -23,16 +23,18 @@ const bookingFields = {
   contact: objectIdSchema,
   vehicle: objectIdSchema,
 
-  parts: z.array(
-    z.object({
-      partId: objectIdSchema,
-      quantityUsed: z
-        .number()
-        .int()
-        .min(1, "Quantity used must be at least 1")
-        .default(1),
-    }),
-  ),
+  parts: z
+    .array(
+      z.object({
+        partId: objectIdSchema,
+        quantityUsed: z
+          .number()
+          .int()
+          .min(1, "Quantity used must be at least 1")
+          .default(1),
+      }),
+    )
+    .optional(),
 };
 
 const createBookingSchema = z.object(bookingFields);
