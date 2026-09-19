@@ -1,10 +1,10 @@
-import { ContactForm } from "./ContactFromComponent";
-import { VehicleForm } from "./VehicleFromComponent";
+import { ContactForm } from "./ContactFormComponent";
+import { VehicleForm } from "./VehicleFormComponent";
 import { DBDropdown } from "./DBDropdown";
 import { useState } from "react";
 import { validateBookingStatus } from "../utils/validatorUtil";
 
-export function BookingFrom() {
+export function BookingForm() {
   const [showAddContactForm, setShowAddContactForm] = useState(false);
   const [showAddVehicleForm, setShowAddVehicleForm] = useState(false);
 

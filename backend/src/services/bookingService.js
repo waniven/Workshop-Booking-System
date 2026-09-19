@@ -21,8 +21,8 @@ async function addBooking(newBooking) {
 }
 
 async function updateBooking(id, data) {
-  return await Booking.findByIdAndUpdate(
-    id,
+  return await Booking.updateOne(
+    { _id: id },
     { $set: data },
     {
       new: true,
