@@ -1,24 +1,29 @@
 import { ContactForm } from "./ContactFromComponent";
+import { VehicleForm } from "./VehicleFromComponent";
+import { DBDropdown } from "./DBDropdown";
 import { useState } from "react";
 import { validateBookingStatus } from "../utils/validatorUtil";
 
 export function BookingFrom() {
   const [showAddContactForm, setShowAddContactForm] = useState(false);
+  const [showAddVehicleForm, setShowAddVehicleForm] = useState(false);
+
+  const [contactRefresh, setContactRefresh] = useState(0);
+  const [vehicleRefresh, setVehicleRefresh] = useState(0);
 
   const [bookingDate, setBookingDate] = useState("");
   const [status, setStatus] = useState("");
   const [contact, setContact] = useState("");
   const [vehicle, setVehicle] = useState("");
-  const [parts, setParts] = useState("");
   const [notes, setNotes] = useState("");
 
-  const toggleAddContactFormVisibility = () => {
+  const toggleAddContactFormVisibility = () =>
     setShowAddContactForm(!showAddContactForm);
-  };
+  const toggleAddVehicleFormVisibility = () =>
+    setShowAddVehicleForm(!showAddVehicleForm);
 
   const handleBookingSubmit = async (event) => {
     event.preventDefault();
-
     if (
       !bookingDate.trim() ||
       !status.trim() ||
@@ -30,18 +35,19 @@ export function BookingFrom() {
       );
       return;
     }
-
     if (!validateBookingStatus(status)) {
       alert("Status must be Pending, In-Progress, Completed, or Cancelled");
       return;
     }
 
+    const isoFormattedDate = new Date(bookingDate).toISOString();
+
     const formData = {
-      bookingDate: bookingDate.trim(),
+      bookingDate: isoFormattedDate,
       status: status.trim(),
-      contact: contact,
-      vehicle: vehicle,
-      notes: notes,
+      contact,
+      vehicle,
+      notes,
     };
 
     try {
@@ -50,14 +56,12 @@ export function BookingFrom() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
       });
-
       if (response.ok) {
         alert("Success! booking data saved to the system.");
         setBookingDate("");
         setStatus("");
         setContact("");
         setVehicle("");
-        setParts("");
         setNotes("");
       } else {
         const errorBody = await response.json().catch(() => ({}));
@@ -93,6 +97,7 @@ export function BookingFrom() {
           <ContactForm
             onSaveSuccess={(contactObj) => {
               setContact(contactObj._id);
+              setContactRefresh((prev) => prev + 1);
               setShowAddContactForm(false);
             }}
           />
@@ -112,7 +117,40 @@ export function BookingFrom() {
         </div>
       )}
 
-      {!showAddContactForm && (
+      {showAddVehicleForm && (
+        <div
+          style={{
+            border: "1px solid #ccc",
+            padding: "20px",
+            borderRadius: "8px",
+            width: "100%",
+            maxWidth: "330px",
+          }}
+        >
+          <VehicleForm
+            onSaveSuccess={(vehicleObj) => {
+              setVehicle(vehicleObj._id);
+              setVehicleRefresh((prev) => prev + 1);
+              setShowAddVehicleForm(false);
+            }}
+          />
+          <button
+            type="button"
+            style={{
+              marginTop: "10px",
+              padding: "8px 16px",
+              alignSelf: "center",
+              display: "block",
+              margin: "10px auto 0",
+            }}
+            onClick={toggleAddVehicleFormVisibility}
+          >
+            Close Add Vehicle
+          </button>
+        </div>
+      )}
+
+      {!showAddContactForm && !showAddVehicleForm && (
         <form
           onSubmit={handleBookingSubmit}
           style={{
@@ -152,7 +190,7 @@ export function BookingFrom() {
             <select
               value={status}
               onChange={(e) => setStatus(e.target.value)}
-              style={{ marginLeft: "10px" }}
+              style={{ marginLeft: "10px", width: "210px" }}
             >
               <option value="" disabled hidden>
                 Select Status
@@ -164,21 +202,14 @@ export function BookingFrom() {
             </select>
           </label>
 
-          <label
-            style={{
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-            }}
-          >
-            Contact:
-            <input
-              type="text"
-              value={contact}
-              onChange={(e) => setContact(e.target.value)}
-              style={{ marginLeft: "10px" }}
-            />
-          </label>
+          <DBDropdown
+            label="Contact"
+            endpoint="http://localhost:3000/api/contacts"
+            value={contact}
+            onChange={setContact}
+            refreshTrigger={contactRefresh}
+            renderOptionText={(c) => `${c.firstName} ${c.lastName}`}
+          />
 
           <button
             type="button"
@@ -193,37 +224,27 @@ export function BookingFrom() {
             Add Contact
           </button>
 
-          <label
-            style={{
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-            }}
-          >
-            Vehicle:
-            <input
-              type="text"
-              value={vehicle}
-              onChange={(e) => setVehicle(e.target.value)}
-              style={{ marginLeft: "10px" }}
-            />
-          </label>
+          <DBDropdown
+            label="Vehicle"
+            endpoint="http://localhost:3000/api/vehicles"
+            value={vehicle}
+            onChange={setVehicle}
+            refreshTrigger={vehicleRefresh}
+            renderOptionText={(v) => `${v.year} ${v.manufacturer} ${v.model}`}
+          />
 
-          <label
+          <button
+            type="button"
             style={{
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
+              padding: "8px 16px",
+              alignSelf: "center",
+              display: "block",
+              margin: "10px auto 0",
             }}
+            onClick={toggleAddVehicleFormVisibility}
           >
-            Parts:
-            <input
-              type="text"
-              value={parts}
-              onChange={(e) => setParts(e.target.value)}
-              style={{ marginLeft: "10px" }}
-            />
-          </label>
+            Add Vehicle
+          </button>
 
           <label
             style={{
@@ -237,7 +258,7 @@ export function BookingFrom() {
               type="text"
               value={notes}
               onChange={(e) => setNotes(e.target.value)}
-              style={{ marginLeft: "10px" }}
+              style={{ marginLeft: "10px", width: "200px" }}
             />
           </label>
 

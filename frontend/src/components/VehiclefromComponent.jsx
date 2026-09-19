@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { validateString, validateVehicleDate } from "../utils/validatorUtil";
 
-export function VehicleForm() {
+export function VehicleForm({ onSaveSuccess }) {
   const [year, setYear] = useState("");
   const [manufacturer, setManufacturer] = useState("");
   const [model, setModel] = useState("");
@@ -47,11 +47,14 @@ export function VehicleForm() {
       });
 
       if (response.ok) {
-        alert("Success! Vehicle data saved to the system.");
+        const savedVehicle = await response.json();
 
+        alert("Success! Vehicle data saved to the system.");
         setYear("");
         setManufacturer("");
         setModel("");
+
+        if (onSaveSuccess) onSaveSuccess(savedVehicle);
       } else {
         const errorBody = await response.json().catch(() => ({}));
         alert(`Server error: ${response.status} ${JSON.stringify(errorBody)}`);
@@ -68,7 +71,6 @@ export function VehicleForm() {
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
-        height: "60vh",
       }}
     >
       <form
@@ -78,10 +80,10 @@ export function VehicleForm() {
           flexDirection: "column",
           gap: "15px",
           width: "100%",
-          maxWidth: "400px",
+          maxWidth: "330px",
         }}
       >
-        <h1 style={{ textAlign: "center" }}>Add Vehicle</h1>
+        <h2 style={{ textAlign: "center" }}>Add Vehicle</h2>
 
         <label
           style={{
@@ -92,10 +94,10 @@ export function VehicleForm() {
         >
           <span>Year:</span>
           <input
-            type="string"
+            type="text"
             value={year}
             onChange={(e) => setYear(e.target.value)}
-            style={{ width: "200px" }}
+            style={{ marginLeft: "10px" }}
           />
         </label>
 
@@ -111,7 +113,7 @@ export function VehicleForm() {
             type="text"
             value={manufacturer}
             onChange={(e) => setManufacturer(e.target.value)}
-            style={{ width: "200px" }}
+            style={{ marginLeft: "10px" }}
           />
         </label>
 
@@ -124,10 +126,10 @@ export function VehicleForm() {
         >
           <span>Model:</span>
           <input
-            type="number"
+            type="text"
             value={model}
             onChange={(e) => setModel(e.target.value)}
-            style={{ width: "200px" }}
+            style={{ marginLeft: "10px" }}
           />
         </label>
 
@@ -139,7 +141,7 @@ export function VehicleForm() {
             alignSelf: "center",
           }}
         >
-          Submit Part
+          Save Vehicle
         </button>
       </form>
     </div>
