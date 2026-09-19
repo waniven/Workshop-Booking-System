@@ -28,7 +28,7 @@ export function BookingList() {
   }, []);
 
   const handleDelete = async (id, event) => {
-    event.stopPropagation(); // Prevents button event bubbling click actions
+    event.stopPropagation();
     if (!window.confirm("Are you sure you want to delete this booking?"))
       return;
 
@@ -39,7 +39,6 @@ export function BookingList() {
 
       if (response.ok) {
         alert("Booking removed successfully.");
-        // Filter out the deleted item from UI state instantly
         setBookings((prev) => prev.filter((b) => b._id !== id));
       } else {
         alert("Failed to delete booking from database.");
@@ -79,15 +78,14 @@ export function BookingList() {
 
   return (
     <div style={{ maxWidth: "600px", margin: "0 auto", padding: "20px" }}>
-      <h2
+      <h1
         style={{
           marginBottom: "20px",
-          borderBottom: "2px solid #eee",
-          paddingBottom: "10px",
+          paddingBottom: "20px",
         }}
       >
-        System Bookings ({bookings.length})
-      </h2>
+        System Bookings
+      </h1>
 
       <div style={{ display: "flex", flexDirection: "column", gap: "15px" }}>
         {bookings.map((booking) => (

@@ -8,7 +8,6 @@ export function BookingDetail() {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // 1. New State Fields to handle Edit Tracking Mode
   const [isEditing, setIsEditing] = useState(false);
   const [editStatus, setEditStatus] = useState("");
   const [editNotes, setEditNotes] = useState("");
@@ -23,7 +22,6 @@ export function BookingDetail() {
       const data = await response.json();
       setBooking(data);
 
-      // Initialize edit fields with current backend values
       setEditStatus(data.status || "");
       setEditNotes(data.notes || "");
     } catch (err) {
@@ -37,7 +35,6 @@ export function BookingDetail() {
     fetchBookingDetails();
   }, [id]);
 
-  // 2. Submit PATCH changes to the API server
   const handleSaveChanges = async () => {
     setIsSaving(true);
     const patchPayload = {
@@ -56,13 +53,12 @@ export function BookingDetail() {
 
       if (response.ok) {
         alert("Success! Booking details updated safely.");
-        // Merge patch changes into our active display state
         setBooking((prev) => ({
           ...prev,
           status: editStatus,
           notes: editNotes.trim(),
         }));
-        setIsEditing(false); // Close edit view mode
+        setIsEditing(false);
       } else {
         const errorBody = await response.json().catch(() => ({}));
         alert(
@@ -107,32 +103,39 @@ export function BookingDetail() {
         backgroundColor: "#fff",
       }}
     >
-      <button
-        type="button"
-        onClick={() => navigate("/")}
-        style={{ marginBottom: "20px", padding: "6px 12px", cursor: "pointer" }}
-        disabled={isEditing}
-      >
-        &larr; Back to System Bookings List
-      </button>
+      <div>
+        <button
+          type="button"
+          onClick={() => navigate("/bookings")}
+          style={{
+            marginBottom: "20px",
+            padding: "6px 12px",
+            cursor: "pointer",
+          }}
+          disabled={isEditing}
+        >
+          &larr; Back to System Bookings List
+        </button>
+      </div>
+
+      <h2>Booking Reference File Profile</h2>
 
       <div
         style={{
           display: "flex",
-          justifyContent: "space-between",
+          justifyContent: "center",
           alignItems: "center",
+          alignSelf: "center",
+          width: "100%",
         }}
       >
-        <h2>Booking Reference File Profile</h2>
-
-        {/* Toggle Edit mode or Action triggers */}
         {!isEditing ? (
           <button
             type="button"
             onClick={() => setIsEditing(true)}
             style={{
               padding: "6px 14px",
-              backgroundColor: "#ffc107",
+              backgroundColor: "#5fa8e7",
               border: "none",
               borderRadius: "4px",
               fontWeight: "bold",
@@ -202,7 +205,6 @@ export function BookingDetail() {
           {new Date(booking.bookingDate).toLocaleString("en-NZ")}
         </div>
 
-        {/* 3. Conditional Input Fields: Render layout conditionally depending on isEditing status value */}
         <div>
           <strong>Workflow Status Flag:</strong>{" "}
           {isEditing ? (
@@ -288,7 +290,6 @@ export function BookingDetail() {
           </div>
         )}
 
-        {/* 4. Conditional Editable Text Area for Notes */}
         <div>
           <strong>Notes:</strong>
           {isEditing ? (
