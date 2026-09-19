@@ -5,12 +5,14 @@ import "./index.css";
 import { BookingForm } from "./components/BookingFormComponent";
 import { BookingList } from "./components/BookingListComponent";
 import { BookingDetail } from "./components/BookingDetailComponent";
+import { VehicleList } from "./components/VehicleListComponent";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<BookingList />} />
+        <Route path="/vehicles" element={<VehicleList />} />
         <Route path="/bookings" element={<BookingList />} />
         <Route path="/bookings/create" element={<BookingForm />} />
         <Route path="/bookings/:id" element={<BookingDetail />} />
