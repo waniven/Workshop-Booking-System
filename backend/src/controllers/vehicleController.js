@@ -146,10 +146,7 @@ router.patch(
   validate(patchVehicleSchema),
   async (req, res) => {
     try {
-      const updatestatus = await vehicleService.updateVehicle(
-        req.params.id,
-        req.body,
-      );
+      await vehicleService.updateVehicle(req.params.id, req.body);
       res.status(201).json("Sucessfully updated vehicle status");
     } catch (error) {
       res.status(500).json({ error: error.message });

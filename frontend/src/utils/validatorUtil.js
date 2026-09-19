@@ -34,10 +34,18 @@ function validateVehicleDate(date) {
   return false;
 }
 
+function validateStockQuantity(stockQuantity) {
+  if (stockQuantity < 0) {
+    return false;
+  }
+  return true;
+}
+
 export {
   validatePhoneNumber,
   validateEmail,
   validateString,
   validatePartStatus,
   validateVehicleDate,
+  validateStockQuantity,
 };

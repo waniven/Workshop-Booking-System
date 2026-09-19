@@ -1,33 +1,45 @@
 import { useState } from "react";
-import { validateString, validatePartStatus } from "../utils/validatorUtil";
+import { validateString, validateStockQuantity } from "../utils/validatorUtil";
 
 export function PartForm() {
+  const [partName, setPartName] = useState("");
   const [partNumber, setPartNumber] = useState("");
   const [manufacturer, setManufacturer] = useState("");
-  const [status, setStatus] = useState("");
+  const [stockQuantity, setStockQuantity] = useState("");
 
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    if (!partNumber.trim() || !manufacturer.trim() || !status) {
-      alert("All fields are required! Please fill out every item.");
+    if (
+      !partName.trim() ||
+      !partNumber.trim() ||
+      !manufacturer.trim() ||
+      !stockQuantity
+    ) {
+      alert("All fields are required. Please fill out every item.");
       return;
     }
 
     if (!validateString(partNumber)) {
-      alert("Invalid Part Number! Use only letters, numbers, and spaces.");
+      alert("Invalid Part Number. Use only letters, numbers, and spaces.");
       return;
     }
 
-    if (!validatePartStatus(status)) {
-      alert("Please select a valid status!");
+    if (!validateString(manufacturer)) {
+      alert("Invalid manufacturer. Use only letters, numbers, and spaces.");
+      return;
+    }
+
+    if (!validateStockQuantity(stockQuantity)) {
+      alert("Stock Quantity cannot be a negative number.");
       return;
     }
 
     const formData = {
+      partName: partName.trim(),
       partNumber: partNumber.trim(),
       manufacturer: manufacturer.trim(),
-      status: status,
+      stockQuantity: stockQuantity.trim(),
     };
 
     try {
@@ -42,9 +54,10 @@ export function PartForm() {
       if (response.ok) {
         alert("Success! Part data saved to the system.");
 
+        setPartName("");
         setPartNumber("");
         setManufacturer("");
-        setStatus("");
+        setStockQuantity("");
       } else {
         alert("Server error: Failed to save part data.");
       }
@@ -74,6 +87,23 @@ export function PartForm() {
         }}
       >
         <h1>Add Part</h1>
+
+        <label
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+          }}
+        >
+          Part Name:
+          <input
+            type="text"
+            value={partName}
+            onChange={(e) => setPartName(e.target.value)}
+            style={{ marginLeft: "10px" }}
+          />
+        </label>
+
         <label
           style={{
             display: "flex",
@@ -113,19 +143,13 @@ export function PartForm() {
             alignItems: "center",
           }}
         >
-          Status:
-          <select
-            value={status}
-            onChange={(e) => setStatus(e.target.value)}
-            style={{ marginLeft: "10px", width: "188px" }}
-          >
-            <option value="" disabled hidden>
-              Please Select
-            </option>
-            <option value="Available">Available</option>
-            <option value="Ordered">Ordered</option>
-            <option value="Requested">Requested</option>
-          </select>
+          Stock Quantity:
+          <input
+            type="text"
+            value={stockQuantity}
+            onChange={(e) => setStockQuantity(e.target.value)}
+            style={{ marginLeft: "10px" }}
+          />
         </label>
 
         <button

@@ -21,27 +21,27 @@ export function ContactForm() {
       !phoneNumber.trim() ||
       !email.trim()
     ) {
-      alert("All fields are required! Please fill out every item.");
+      alert("All fields are required. Please fill out every item.");
       return;
     }
 
     if (!validateString(firstName)) {
-      alert("Invalid First Name! Use only letters, numbers, and spaces.");
+      alert("Invalid First Name. Use only letters, numbers, and spaces.");
       return;
     }
 
     if (!validateString(lastName)) {
-      alert("Invalid Last Name! Use only letters, numbers, and spaces.");
+      alert("Invalid Last Name. Use only letters, numbers, and spaces.");
       return;
     }
 
     if (!validateEmail(email)) {
-      alert("Invalid Email! follow user@domain.com schema.");
+      alert("Invalid Email. follow user@domain.com schema.");
       return;
     }
 
     if (!validatePhoneNumber(phoneNumber)) {
-      alert("Invalid Phone Number! Use number code e.g +64 or leading 0.");
+      alert("Invalid Phone Number. Use number code e.g +64 or leading 0.");
       return;
     }
 

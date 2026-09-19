@@ -5,18 +5,17 @@ export function VehicleForm() {
   const [year, setYear] = useState("");
   const [manufacturer, setManufacturer] = useState("");
   const [model, setModel] = useState("");
-  const [modifications, setModifications] = useState("");
 
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    if (
-      !year.trim() ||
-      !manufacturer.trim() ||
-      !model.trim() ||
-      !modifications.trim()
-    ) {
+    if (!year.trim() || !manufacturer.trim() || !model.trim()) {
       alert("All fields are required! Please fill out every item.");
+      return;
+    }
+
+    if (!validateVehicleDate(year)) {
+      alert("Invalid year input. Use 1886 to next year.");
       return;
     }
 
@@ -32,16 +31,10 @@ export function VehicleForm() {
       return;
     }
 
-    if (!validateVehicleDate(year)) {
-      alert("Invalid year input. Use 1886 to next year.");
-      return;
-    }
-
     const formData = {
       year: year.trim(),
       manufacturer: manufacturer.trim(),
       model: model.trim(),
-      modifications: modifications.trim(),
     };
 
     try {
@@ -59,7 +52,6 @@ export function VehicleForm() {
         setYear("");
         setManufacturer("");
         setModel("");
-        setModifications("");
       } else {
         alert("Server error: Failed to save vehicle data.");
       }
@@ -134,22 +126,6 @@ export function VehicleForm() {
             type="text"
             value={model}
             onChange={(e) => setModel(e.target.value)}
-            style={{ width: "200px" }}
-          />
-        </label>
-
-        <label
-          style={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-          }}
-        >
-          <span>Modifications:</span>
-          <input
-            type="text"
-            value={modifications}
-            onChange={(e) => setModifications(e.target.value)}
             style={{ width: "200px" }}
           />
         </label>
