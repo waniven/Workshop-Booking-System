@@ -74,6 +74,21 @@ export function BookingList() {
     return (
       <div style={{ textAlign: "center", padding: "40px" }}>
         No active bookings found.
+        <div style={{ maxWidth: "600px", margin: "0 auto", padding: "20px" }}>
+          <button
+            type="button"
+            onClick={() => navigate(`/bookings/create`)}
+            style={{
+              padding: "6px 14px",
+              backgroundColor: "#5fa8e7",
+              border: "none",
+              borderRadius: "4px",
+              cursor: "pointer",
+            }}
+          >
+            Create Booking
+          </button>
+        </div>
       </div>
     );
 
