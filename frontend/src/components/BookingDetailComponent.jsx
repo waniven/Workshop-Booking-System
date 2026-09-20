@@ -205,7 +205,7 @@ export function BookingDetail() {
         </div>
         <div>
           <strong>Booking Date:</strong>{" "}
-          {new Date(booking.bookingDate).toLocaleString("en-NZ")}
+          {new Date(booking.bookingDate).toLocaleDateString("en-NZ")}
         </div>
 
         <div>
@@ -286,12 +286,6 @@ export function BookingDetail() {
             </div>
           )}
         </div>
-
-        {booking.parts && (
-          <div>
-            <strong>Allocated Parts:</strong> {booking.parts}
-          </div>
-        )}
 
         <div>
           <strong>Notes:</strong>
