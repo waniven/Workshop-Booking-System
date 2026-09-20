@@ -6,7 +6,7 @@ const mongoose = require("mongoose");
 const path = require("path");
 
 const app = express();
-const dbURI = "mongodb://localhost:27017/workshop";
+const dbURI = process.env.MONGO_URI || "mongodb://localhost:27017/workshop";
 const PORT = 3000;
 
 const vehicleRouter = require("./controllers/vehicleController");
